@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cinematic Proposal 💘</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+margin:0;
+font-family:Arial, sans-serif;
+color:white;
+text-align:center;
+overflow:hidden;
+background:linear-gradient(-45deg,#ff9a9e,#fad0c4,#ffc3d0,#ff8fab);
+background-size:400% 400%;
+animation:bgMove 12s ease infinite;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+.center{
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:24px;
+backdrop-filter: blur(2px);
+}
+
+.type{
+font-size:28px;
+max-width:92%;
+min-height:70px;
+text-shadow:0 4px 20px rgba(0,0,0,.25);
+}
+
+.sub{
+margin-top:12px;
+font-size:16px;
+opacity:.95;
+}
+
+.divider{
+width:140px;
+height:3px;
+background:white;
+border-radius:4px;
+margin:18px auto;
+opacity:.8;
+}
+
+.glowWrap{
+position:relative;
+margin:18px 0;
+}
+
+.glowWrap::before{
+content:"";
+position:absolute;
+inset:-14px;
+background:radial-gradient(circle,#ffffff66,transparent 70%);
+border-radius:50%;
+filter:blur(14px);
+animation:pulse 2.5s infinite;
+}
+
+@keyframes pulse{
+0%,100%{opacity:.6}
+50%{opacity:1}
+}
+
+.profile{
+width:190px;height:190px;
+border-radius:50%;
+object-fit:cover;
+border:5px solid white;
+box-shadow:0 0 35px #ff4d6d;
+position:relative;
+z-index:1;
+}
+
+button{
+padding:14px 24px;
+font-size:18px;
+border:none;
+border-radius:14px;
+margin:10px;
+cursor:pointer;
+opacity:0;
+animation:btnIn .6s ease forwards;
+}
+
+@keyframes btnIn{
+to{opacity:1;transform:translateY(0)}
+from{opacity:0;transform:translateY(20px)}
+}
+
+#yes{background:#ff2e63;color:white;}
+#no{background:#666;color:white;}
+
+.popup{
+position:fixed;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+background:white;
+color:black;
+padding:26px;
+border-radius:16px;
+display:none;
+width:92%;
+max-width:340px;
+box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+/* meme */
+.meme{
+width:95vw;
+max-width:520px;
+border-radius:18px;
+box-shadow:0 14px 40px rgba(0,0,0,.35);
+margin-top:14px;
+animation:zoom .6s ease;
+}
+
+@keyframes zoom{
+from{transform:scale(.6);opacity:0}
+to{transform:scale(1);opacity:1}
+}
+
+/* hearts */
+.heart{
+position:absolute;
+animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+from{transform:translateY(100vh);opacity:1}
+to{transform:translateY(-10vh);opacity:0}
+}
+
+.footer{
+position:fixed;
+bottom:10px;
+left:0;right:0;
+font-size:13px;
+opacity:.85;
+}
+</style>
+</head>
+
+<body>
+
+<!-- music -->
+<audio autoplay loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9bce45.mp3">
+</audio>
+
+<!-- dramatic hit -->
+<audio id="drama">
+<source src="https://cdn.pixabay.com/audio/2022/10/16/audio_12c6f8c1b4.mp3">
+</audio>
+
+<div id="app" class="center"></div>
+
+<div class="popup" id="quiz">
+<h3>Final qualification round 😌</h3>
+<p>What’s my favourite dessert? 🍰</p>
+<input id="ans" style="padding:10px;width:90%">
+<br><br>
+<button onclick="check()">Submit</button>
+</div>
+
+<div class="footer">Made with unnecessary drama 💘</div>
+
+<script>
+const name="Poorva";
+const correctAnswers=["poorva","me","you","its you","me?"];
+const app=document.getElementById("app");
+const drama=document.getElementById("drama");
+
+/* ---------- TYPE ---------- */
+function typeText(text, sub, cb){
+let i=0;
+app.innerHTML=`
+<div class="type"></div>
+<div class="divider"></div>
+<div class="sub">${sub||""}</div>`;
+const el=app.querySelector(".type");
+
+const t=setInterval(()=>{
+el.innerHTML+=text[i];
+i++;
+if(i>=text.length){
+clearInterval(t);
+setTimeout(cb,900);
+}
+},38);
+}
+
+/* ---------- SCENES ---------- */
+function s1(){typeText("I need to ask you something important…","No pressure 👀",s2);}
+function s2(){typeText("This is serious…","Okay maybe dramatic",s3);}
+function s3(){typeText("Prepare yourself 😌","Final question incoming",proposal);}
+
+/* ---------- PROPOSAL ---------- */
+function proposal(){
+app.innerHTML=`
+<div class="glowWrap">
+<img src="photo.jpeg" class="profile">
+</div>
+
+<h1>Will you be my Valentine, ${name}? 💌</h1>
+<div class="divider"></div>
+<div class="sub">Choose wisely. No retakes. 😌</div>
+
+<button id="yes">Yes 💖</button>
+<button id="no">No 😢</button>
+`;
+
+yes.onclick=()=>quiz.style.display="block";
+
+let n=0;
+const guilt=["Are you sure? 😭","I’ll cry 🥺","Heart broken 💔","Illegal move 😤","Last chance 😢"];
+
+no.onclick=()=>{
+n++;
+app.querySelector("h1").innerText=guilt[Math.min(n,guilt.length-1)];
+yes.style.transform=`scale(${1+n*.25})`;
+no.style.transform=`scale(${1-n*.12})`;
+no.style.position="absolute";
+no.style.left=Math.random()*80+"%";
+no.style.top=Math.random()*80+"%";
+};
+}
+
+/* ---------- QUIZ ---------- */
+function check(){
+quiz.style.display="none";
+const v=ans.value.toLowerCase().trim();
+thinking(correctAnswers.some(a=>v.includes(a)));
+}
+
+/* ---------- THINKING ---------- */
+function thinking(ok){
+app.innerHTML=`
+<h1>Thinkinggggg… 🤔💭</h1>
+<div class="divider"></div>
+<div class="sub">Judging your answer...</div>`;
+setTimeout(()=>{
+drama.play();
+final(ok);
+},1600);
+}
+
+/* ---------- FINAL ---------- */
+function final(ok){
+const meme = ok ? "memestart.jpg" : "memeend.jpg";
+
+app.innerHTML=`
+<h1>${ok?"YAYYYY ❤️🎉":"ITS YOUUUU DUMBASS 😌💖"}</h1>
+<div class="divider"></div>
+<img src="${meme}" class="meme">
+<p class="sub">${ok?"Official Valentine Confirmed 💘":"Wrong — but accepted 😂"}</p>
+`;
+
+confetti();
+}
+
+/* ---------- CONFETTI ---------- */
+function confetti(){
+for(let i=0;i<160;i++){
+const h=document.createElement("div");
+h.innerHTML=["💖","💘","💕","💗"][Math.floor(Math.random()*4)];
+h.className="heart";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(18+Math.random()*22)+"px";
+h.style.animationDuration=(Math.random()*3+2)+"s";
+document.body.appendChild(h);
+}
+}
+
+/* bg hearts */
+setInterval(()=>{
+const h=document.createElement("div");
+h.innerHTML="💗";
+h.className="heart";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration="7s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),7000);
+},900);
+
+/* start */
+s1();
+</script>
+
+</body>
+</html>
